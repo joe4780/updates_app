@@ -12,7 +12,7 @@ class UpdatesApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Updates App',
+      title: 'WorldSkills Updates',
       theme: ThemeData(
         primaryColor: const Color(0xFF1A4B8E),
         scaffoldBackgroundColor: Colors.white,
@@ -74,40 +74,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               floating: false,
               pinned: true,
               backgroundColor: const Color(0xFF1A4B8E),
-              flexibleSpace: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return FlexibleSpaceBar(
-                    titlePadding: EdgeInsets.zero,
-                    centerTitle: true,
-                    title: Container(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Image.asset(
-                        'assets/logo.png',
-                        height: constraints.maxHeight > 120 ? 30 : 24,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  );
-                },
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                title: Image.asset(
+                  'assets/logo.png',
+                  height: 24,
+                  fit: BoxFit.contain,
+                ),
               ),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(48),
-                child: Container(
-                  color: const Color(0xFF1A4B8E),
-                  child: TabBar(
-                    controller: _tabController,
-                    tabs: const [
-                      Tab(text: 'News'),
-                      Tab(text: 'Results'),
-                      Tab(text: 'History'),
-                    ],
-                    indicatorColor: Colors.white,
-                    labelColor: Colors.white,
-                    unselectedLabelColor: Colors.white70,
-                    labelStyle: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
+                child: TabBar(
+                  controller: _tabController,
+                  indicatorColor: Colors.white,
+                  tabs: const [
+                    Tab(text: 'News'),
+                    Tab(text: 'Results'),
+                    Tab(text: 'History'),
+                  ],
+                  labelColor: Colors.white,
+                  unselectedLabelColor: Colors.white70,
+                  labelStyle: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),
@@ -152,9 +141,13 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    return ListView.separated(
+      padding: EdgeInsets.zero,
       itemCount: newsData.length,
+      separatorBuilder: (context, index) => const Divider(
+        height: 1,
+        color: Color(0xFFE5E5E5),
+      ),
       itemBuilder: (context, index) {
         var newsItem = newsData[index];
         return NewsCard(newsItem: newsItem);
@@ -170,68 +163,56 @@ class NewsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 1,
-      margin: const EdgeInsets.only(bottom: 12),
-      child: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NewsDetailPage(newsItem: newsItem),
-            ),
-          );
-        },
-        child: Column(
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => NewsDetailPage(newsItem: newsItem),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (newsItem['image_url'] != null)
-              ClipRRect(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(4)),
-                child: Image.asset(
-                  newsItem['image_url'],
-                  width: double.infinity,
-                  height: 160,
-                  fit: BoxFit.cover,
-                ),
+            // Thumbnail
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: Image.asset(
+                newsItem['image_url'] ?? 'assets/placeholder.png',
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
               ),
-            Padding(
-              padding: const EdgeInsets.all(16),
+            ),
+            const SizedBox(width: 12),
+            // Text content
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (newsItem['tag'] != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1A4B8E).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        newsItem['tag'],
-                        style: const TextStyle(
-                          color: Color(0xFF1A4B8E),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  const SizedBox(height: 8),
                   Text(
                     newsItem['headline'],
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold, // Changed to bold
+                      color: Colors.black87,
+                      height: 1.2,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    newsItem['content'],
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
+                    newsItem['content'] ?? '',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Colors.black54,
+                      height: 1.2,
                     ),
                   ),
                 ],
@@ -251,11 +232,6 @@ class NewsDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.transparent,
-      statusBarIconBrightness: Brightness.dark,
-    ));
-
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -274,36 +250,17 @@ class NewsDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (newsItem['image_url'] != null)
-              Image.asset(
-                newsItem['image_url'],
-                width: double.infinity,
-                height: 200,
-                fit: BoxFit.cover,
-              ),
+            Image.asset(
+              newsItem['image_url'] ?? 'assets/placeholder.png',
+              width: double.infinity,
+              height: 200,
+              fit: BoxFit.cover,
+            ),
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (newsItem['tag'] != null)
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1A4B8E).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Text(
-                        newsItem['tag'],
-                        style: const TextStyle(
-                          color: Color(0xFF1A4B8E),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  const SizedBox(height: 12),
                   Text(
                     newsItem['headline'],
                     style: const TextStyle(
@@ -313,7 +270,7 @@ class NewsDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    newsItem['content'] ?? newsItem['description'],
+                    newsItem['content'] ?? newsItem['description'] ?? '',
                     style: const TextStyle(
                       fontSize: 16,
                       height: 1.5,

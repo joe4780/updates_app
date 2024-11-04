@@ -32,27 +32,17 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   late ScrollController _scrollController;
-  bool _isScrolled = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
     _scrollController = ScrollController();
-    _scrollController.addListener(_onScroll);
 
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
     ));
-  }
-
-  void _onScroll() {
-    if (_scrollController.offset > 50 && !_isScrolled) {
-      setState(() => _isScrolled = true);
-    } else if (_scrollController.offset <= 50 && _isScrolled) {
-      setState(() => _isScrolled = false);
-    }
   }
 
   @override
@@ -70,17 +60,36 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              expandedHeight: 100.0,
+              expandedHeight: 120.0,
               floating: false,
               pinned: true,
               backgroundColor: const Color(0xFF1A4B8E),
-              flexibleSpace: FlexibleSpaceBar(
-                centerTitle: true,
-                title: Image.asset(
-                  'assets/logo.png',
-                  height: 24,
-                  fit: BoxFit.contain,
-                ),
+              flexibleSpace: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  final double currentHeight = constraints.biggest.height;
+                  final double expandRatio =
+                      ((currentHeight - kToolbarHeight - 48) /
+                              (120.0 - kToolbarHeight - 48))
+                          .clamp(0.0, 1.0);
+
+                  return FlexibleSpaceBar(
+                    centerTitle: true,
+                    title: Opacity(
+                      opacity: 1.0, // Keep the logo visible
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: double
+                            .infinity, // Make the logo container take full width
+                        child: Image.asset(
+                          'assets/logo.png',
+                          height: 30 + (expandRatio * 30), // Adjust logo size
+                          fit: BoxFit
+                              .contain, // Ensure the logo maintains its aspect ratio
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(48),
@@ -141,18 +150,20 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.zero,
-      itemCount: newsData.length,
-      separatorBuilder: (context, index) => const Divider(
-        height: 1,
-        color: Color(0xFFE5E5E5),
-      ),
-      itemBuilder: (context, index) {
-        var newsItem = newsData[index];
-        return NewsCard(newsItem: newsItem);
-      },
-    );
+    return newsData.isNotEmpty
+        ? ListView.separated(
+            padding: EdgeInsets.zero,
+            itemCount: newsData.length,
+            separatorBuilder: (context, index) => const Divider(
+              height: 1,
+              color: Color(0xFFE5E5E5),
+            ),
+            itemBuilder: (context, index) {
+              var newsItem = newsData[index];
+              return NewsCard(newsItem: newsItem);
+            },
+          )
+        : const Center(child: CircularProgressIndicator());
   }
 }
 
@@ -173,11 +184,11 @@ class NewsCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.symmetric(
+            vertical: 8.0, horizontal: 16.0), // Adjust padding
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Thumbnail
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: Image.asset(
@@ -188,7 +199,6 @@ class NewsCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 12),
-            // Text content
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -199,7 +209,7 @@ class NewsCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 15,
-                      fontWeight: FontWeight.bold, // Changed to bold
+                      fontWeight: FontWeight.bold,
                       color: Colors.black87,
                       height: 1.2,
                     ),

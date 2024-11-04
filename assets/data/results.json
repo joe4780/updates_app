@@ -1,0 +1,104 @@
+{
+  "results": [
+    {
+      "country": "Canada",
+      "rank": 1,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_ca-flag.gif"
+    },
+    {
+      "country": "Australia",
+      "rank": 2,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_as-flag.gif"
+    },
+    {
+      "country": "Germany",
+      "rank": 3,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_de-flag.gif"
+    },
+    {
+      "country": "Japan",
+      "rank": 4,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_jp-flag.gif"
+    },
+    {
+      "country": "Brazil",
+      "rank": 5,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_br-flag.gif"
+    },
+    {
+      "country": "France",
+      "rank": 6,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_fr-flag.gif"
+    },
+    {
+      "country": "China",
+      "rank": 7,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_ch-flag.gif"
+    },
+    {
+      "country": "India",
+      "rank": 8,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_in-flag.gif"
+    },
+    {
+      "country": "Italy",
+      "rank": 9,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_it-flag.gif"
+    },
+    {
+      "country": "United Kingdom",
+      "rank": 10,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_gb-flag.gif"
+    },
+    {
+      "country": "South Korea",
+      "rank": 11,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_kr-flag.gif"
+    },
+    {
+      "country": "Argentina",
+      "rank": 12,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_ar-flag.gif"
+    },
+    {
+      "country": "Mexico",
+      "rank": 13,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_mx-flag.gif"
+    },
+    {
+      "country": "Spain",
+      "rank": 14,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_es-flag.gif"
+    },
+    {
+      "country": "Netherlands",
+      "rank": 15,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_nl-flag.gif"
+    },
+    {
+      "country": "Sweden",
+      "rank": 16,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_se-flag.gif"
+    },
+    {
+      "country": "Russia",
+      "rank": 17,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_ru-flag.gif"
+    },
+    {
+      "country": "Saudi Arabia",
+      "rank": 18,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_sa-flag.gif"
+    },
+    {
+      "country": "Turkey",
+      "rank": 19,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_tr-flag.gif"
+    },
+    {
+      "country": "South Africa",
+      "rank": 20,
+      "flag_image_url": "https://www.worldometers.info//img/flags/small/tn_za-flag.gif"
+    }
+  ]
+}

@@ -300,6 +300,8 @@ class NewsDetailPage extends StatelessWidget {
 }
 
 class HistoryPage extends StatefulWidget {
+  const HistoryPage({Key? key}) : super(key: key);
+
   @override
   _HistoryPageState createState() => _HistoryPageState();
 }
@@ -362,7 +364,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   var event = historyData[index];
                   return HistoryEvent(
                     event: event,
-                    isActive: index == 1, // Adjust based on your logic
+                    isActive: index == 1,
                     isLast: index == historyData.length - 1,
                   );
                 },
@@ -386,13 +388,14 @@ class HistoryEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 32.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Timeline indicator column
-          SizedBox(
-            width: 16,
+          // Timeline indicator column with continuous line
+          Container(
+            width: 20,
             child: Column(
               children: [
                 // Circle indicator
@@ -400,21 +403,22 @@ class HistoryEvent extends StatelessWidget {
                   width: 16,
                   height: 16,
                   decoration: BoxDecoration(
-                    color: isActive ? Color(0xFF003B5C) : Colors.white,
+                    color: isActive ? const Color(0xFF003B5C) : Colors.white,
                     border: Border.all(
-                      color: Color(0xFF003B5C),
+                      color: const Color(0xFF003B5C),
                       width: 2,
                     ),
                     shape: BoxShape.circle,
                   ),
                 ),
-                // Vertical line
+                // Vertical line that extends to the next item
                 if (!isLast)
-                  Expanded(
-                    child: Container(
-                      width: 1,
-                      color: Color(0xFF003B5C),
-                    ),
+                  Container(
+                    width: 2,
+                    height:
+                        150, // Adjust this value based on your content height
+                    color: const Color(0xFF003B5C),
+                    margin: const EdgeInsets.only(top: 4),
                   ),
               ],
             ),
@@ -425,41 +429,52 @@ class HistoryEvent extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Date and title section
                 Text(
                   event['date'] ?? '',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF003B5C),
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 8),
                 Text(
                   event['title'] ?? '',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFF003B5C),
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(height: 12),
-                if (event['logo'] != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Image.asset(
-                      event['logo'],
-                      height: 32,
+                const SizedBox(height: 16),
+                // Content section with image and text side by side
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (event['image'] != null)
+                      Container(
+                        width: 60, // Adjust width as needed
+                        margin: const EdgeInsets.only(right: 16),
+                        child: Image.asset(
+                          event['image'],
+                          height: 40,
+                          fit: BoxFit.contain,
+                          alignment: Alignment.topLeft,
+                        ),
+                      ),
+                    Expanded(
+                      child: Text(
+                        event['content'] ?? '',
+                        style: const TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          height: 1.6,
+                        ),
+                      ),
                     ),
-                  ),
-                Text(
-                  event['content'] ?? '',
-                  style: TextStyle(
-                    color: Colors.black87,
-                    fontSize: 14,
-                    height: 1.5,
-                  ),
+                  ],
                 ),
-                const SizedBox(height: 32),
               ],
             ),
           ),

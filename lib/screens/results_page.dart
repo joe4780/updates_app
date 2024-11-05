@@ -23,7 +23,8 @@ class _ResultsPageState extends State<ResultsPage> {
         await rootBundle.loadString('assets/data/results.json');
     final Map<String, dynamic> data = json.decode(response);
     setState(() {
-      resultsData = data['results'];
+      resultsData =
+          data['results'] ?? []; // Use an empty list if 'results' is null
     });
   }
 
@@ -69,11 +70,35 @@ class _ResultsPageState extends State<ResultsPage> {
                   itemCount: resultsData.length,
                   itemBuilder: (context, index) {
                     final result = resultsData[index];
-                    return ResultCard(
-                      country: result['country'],
-                      rank: result['rank'],
-                      flagAssetPath: result['flag_image_url'],
-                      medals: _getMedalCounts(index),
+                    return GestureDetector(
+                      onTap: () {
+                        List<Competitor> competitors =
+                            (result['competitors'] as List?)
+                                    ?.map((c) => Competitor(
+                                          name: c['name'],
+                                          avatarPath: c['avatarPath'],
+                                          skillName: c['skillName'],
+                                          medalType: c['medalType'],
+                                        ))
+                                    .toList() ??
+                                []; // Use empty list if competitors is null
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ResultDetailPage(
+                              country: result['country'],
+                              flagAssetPath: result['flag_image_url'],
+                              competitors: competitors,
+                            ),
+                          ),
+                        );
+                      },
+                      child: ResultCard(
+                        country: result['country'],
+                        rank: result['rank'],
+                        flagAssetPath: result['flag_image_url'],
+                        medals: _getMedalCounts(index),
+                      ),
                     );
                   },
                 ),
@@ -94,19 +119,10 @@ class _ResultsPageState extends State<ResultsPage> {
     );
   }
 
-  // Mock medal counts based on rank
   Map<String, int> _getMedalCounts(int index) {
     if (index == 0) return {'gold': 7, 'silver': 6, 'bronze': 2, 'total': 26};
     if (index == 1) return {'gold': 5, 'silver': 5, 'bronze': 5, 'total': 23};
     if (index == 2) return {'gold': 3, 'silver': 5, 'bronze': 6, 'total': 27};
-    if (index == 3) return {'gold': 3, 'silver': 5, 'bronze': 6, 'total': 13};
-    if (index == 5) return {'gold': 3, 'silver': 4, 'bronze': 6, 'total': 20};
-    if (index == 6) return {'gold': 3, 'silver': 3, 'bronze': 6, 'total': 25};
-    if (index == 7) return {'gold': 0, 'silver': 5, 'bronze': 6, 'total': 24};
-    if (index == 8) return {'gold': 0, 'silver': 2, 'bronze': 6, 'total': 12};
-    if (index == 9) return {'gold': 0, 'silver': 5, 'bronze': 6, 'total': 11};
-    if (index == 10) return {'gold': 0, 'silver': 5, 'bronze': 6, 'total': 10};
-    if (index == 11) return {'gold': 0, 'silver': 5, 'bronze': 6, 'total': 11};
     return {'gold': 2, 'silver': 3, 'bronze': 4, 'total': 9};
   }
 }
@@ -193,6 +209,161 @@ class ResultCard extends StatelessWidget {
         count.toString(),
         style: const TextStyle(fontSize: 14),
       ),
+    );
+  }
+}
+
+class ResultDetailPage extends StatelessWidget {
+  final String country;
+  final String flagAssetPath;
+  final List<Competitor> competitors;
+
+  const ResultDetailPage({
+    Key? key,
+    required this.country,
+    required this.flagAssetPath,
+    required this.competitors,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text('Results'),
+      ),
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(24),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Image.asset(
+                  flagAssetPath,
+                  width: 60,
+                  height: 40,
+                  fit: BoxFit.cover,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  country,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: GridView.builder(
+              padding: const EdgeInsets.all(16),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.85,
+                crossAxisSpacing: 16,
+                mainAxisSpacing: 16,
+              ),
+              itemCount: competitors.length,
+              itemBuilder: (context, index) {
+                return CompetitorCard(competitor: competitors[index]);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class Competitor {
+  final String name;
+  final String avatarPath;
+  final String skillName;
+  final String medalType;
+
+  const Competitor({
+    required this.name,
+    required this.avatarPath,
+    required this.skillName,
+    required this.medalType,
+  });
+}
+
+class CompetitorCard extends StatelessWidget {
+  final Competitor competitor;
+
+  const CompetitorCard({
+    Key? key,
+    required this.competitor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 2,
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          children: [
+            if (competitor.medalType.isNotEmpty)
+              Align(
+                alignment: Alignment.topRight,
+                child: _buildMedalIcon(competitor.medalType),
+              ),
+            CircleAvatar(
+              radius: 40,
+              backgroundColor: Colors.grey[200],
+              backgroundImage: competitor.avatarPath.isNotEmpty
+                  ? AssetImage(competitor.avatarPath)
+                  : null,
+              child: competitor.avatarPath.isEmpty
+                  ? const Icon(Icons.person, size: 40, color: Colors.grey)
+                  : null,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              competitor.name,
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Flexible(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Text(
+                  competitor.skillName,
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMedalIcon(String medalType) {
+    Color color;
+    if (medalType == 'gold')
+      color = Colors.yellow[700]!;
+    else if (medalType == 'silver')
+      color = Colors.grey[400]!;
+    else if (medalType == 'bronze')
+      color = Colors.brown[300]!;
+    else
+      color = Colors.transparent;
+
+    return Icon(
+      Icons.emoji_events,
+      color: color,
+      size: 20,
     );
   }
 }

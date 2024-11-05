@@ -3,102 +3,234 @@
     {
       "country": "Canada",
       "rank": 1,
-      "flag_image_url": "assets/flags/one.gif"
+      "flag_image_url": "assets/flags/one.gif",
+      "competitors": [
+        {
+          "name": "Alice Johnson",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Skiing",
+          "medalType": "gold"
+        },
+        {
+          "name": "Thomas Lee",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "bronze"
+        },
+        {
+          "name": "Thomas Lee",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "bronze"
+        },
+        {
+          "name": "John Smith",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Snowboarding",
+          "medalType": "silver"
+        }
+      ]
     },
     {
       "country": "Australia",
       "rank": 2,
-      "flag_image_url": "assets/flags/two.gif"
+      "flag_image_url": "assets/flags/two.gif",
+      "competitors": [
+        {
+          "name": "Emily Davis",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Swimming",
+          "medalType": "gold"
+        },
+        {
+          "name": "Thomas Lee",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "bronze"
+        },
+        {
+          "name": "Thomas Lee",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "bronze"
+        }
+      ]
     },
     {
       "country": "Germany",
       "rank": 3,
-      "flag_image_url": "assets/flags/three.gif"
+      "flag_image_url": "assets/flags/three.gif",
+      "competitors": [
+        {
+          "name": "Hans Müller",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Rowing",
+          "medalType": "silver"
+        },
+        {
+          "name": "Thomas Lee",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "bronze"
+        },
+        {
+          "name": "Greta Schultz",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Javelin",
+          "medalType": "bronze"
+        }
+      ]
     },
     {
       "country": "Japan",
       "rank": 4,
-      "flag_image_url": "assets/flags/four.gif"
+      "flag_image_url": "assets/flags/four.gif",
+      "competitors": [
+        {
+          "name": "Yuki Tanaka",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Karate",
+          "medalType": "gold"
+        },
+        {
+          "name": "Haruto Suzuki",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Archery",
+          "medalType": "silver"
+        }
+      ]
     },
     {
       "country": "Brazil",
       "rank": 5,
-      "flag_image_url": "assets/flags/five.gif"
+      "flag_image_url": "assets/flags/five.gif",
+      "competitors": [
+        {
+          "name": "Lucas Souza",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Soccer",
+          "medalType": "gold"
+        },
+        {
+          "name": "Thomas Lee",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "bronze"
+        },
+        {
+          "name": "Ana Lima",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Beach Volleyball",
+          "medalType": "bronze"
+        }
+      ]
     },
     {
       "country": "France",
       "rank": 6,
-      "flag_image_url": "assets/flags/six.gif"
+      "flag_image_url": "assets/flags/six.gif",
+      "competitors": [
+        {
+          "name": "Louis Bernard",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Fencing",
+          "medalType": "silver"
+        },
+        {
+          "name": "Thomas Lee",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "bronze"
+        },
+        {
+          "name": "Marie Dupont",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Judo",
+          "medalType": "bronze"
+        }
+      ]
     },
     {
       "country": "China",
       "rank": 7,
-      "flag_image_url": "assets/flags/7.gif"
+      "flag_image_url": "assets/flags/7.gif",
+      "competitors": [
+        {
+          "name": "Li Wei",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Table Tennis",
+          "medalType": "gold"
+        },
+        {
+          "name": "Mei Zhang",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Diving",
+          "medalType": "silver"
+        }
+      ]
     },
     {
       "country": "India",
       "rank": 8,
-      "flag_image_url": "assets/flags/8.gif"
+      "flag_image_url": "assets/flags/8.gif",
+      "competitors": [
+        {
+          "name": "Rajesh Kumar",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Wrestling",
+          "medalType": "bronze"
+        },
+        {
+          "name": "Thomas Lee",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "bronze"
+        },
+        {
+          "name": "Anita Singh",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Badminton",
+          "medalType": "silver"
+        }
+      ]
     },
     {
       "country": "Italy",
       "rank": 9,
-      "flag_image_url": "assets/flags/9.gif"
+      "flag_image_url": "assets/flags/9.gif",
+      "competitors": [
+        {
+          "name": "Giovanni Rossi",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "gold"
+        }
+      ]
     },
     {
       "country": "United Kingdom",
       "rank": 10,
-      "flag_image_url": "assets/flags/10.gif"
-    },
-    {
-      "country": "South Korea",
-      "rank": 11,
-      "flag_image_url": "assets/flags/11.gif"
-    },
-    {
-      "country": "Argentina",
-      "rank": 12,
-      "flag_image_url": "assets/flags/12.gif"
-    },
-    {
-      "country": "Mexico",
-      "rank": 13,
-      "flag_image_url": "assets/flags/13.gif"
-    },
-    {
-      "country": "Spain",
-      "rank": 14,
-      "flag_image_url": "assets/flags/14.gif"
-    },
-    {
-      "country": "Netherlands",
-      "rank": 15,
-      "flag_image_url": "assets/flags/15.gif"
-    },
-    {
-      "country": "Sweden",
-      "rank": 16,
-      "flag_image_url": "assets/flags/16.gif"
-    },
-    {
-      "country": "Russia",
-      "rank": 17,
-      "flag_image_url": "assets/flags/17.gif"
-    },
-    {
-      "country": "Saudi Arabia",
-      "rank": 18,
-      "flag_image_url": "assets/flags/18.gif"
-    },
-    {
-      "country": "Turkey",
-      "rank": 19,
-      "flag_image_url": "assets/flags/19.gif"
-    },
-    {
-      "country": "South Africa",
-      "rank": 20,
-      "flag_image_url": "assets/flags/20.gif"
+      "flag_image_url": "assets/flags/10.gif",
+      "competitors": [
+        {
+          "name": "Olivia Smith",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Rowing",
+          "medalType": "silver"
+        },
+        {
+          "name": "Thomas Lee",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Cycling",
+          "medalType": "bronze"
+        },
+        {
+          "name": "James Brown",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Track and Field",
+          "medalType": "bronze"
+        }
+      ]
     }
   ]
 }

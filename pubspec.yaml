@@ -55,6 +55,7 @@ flutter:
     - assets/data/history.json
     - assets/data/news.json
     - assets/data/results.json
+    - assets/avatar.png
     - assets/logo.png
     - assets/logo2.png
     - assets/logo3.jpeg

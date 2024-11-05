@@ -336,20 +336,6 @@ class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/logo.png',
-              height: 24,
-              color: Colors.white,
-            ),
-            const SizedBox(width: 8),
-            const Text('History'),
-          ],
-        ),
-        backgroundColor: const Color(0xFF003B5C),
-      ),
       body: Container(
         color: Colors.white,
         child: isLoading

@@ -354,20 +354,34 @@ class _HistoryPageState extends State<HistoryPage> {
         color: Colors.white,
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
-                  vertical: 32.0,
-                ),
-                itemCount: historyData.length,
-                itemBuilder: (context, index) {
-                  var event = historyData[index];
-                  return HistoryEvent(
-                    event: event,
-                    isActive: index == 1,
-                    isLast: index == historyData.length - 1,
-                  );
-                },
+            : Stack(
+                children: [
+                  // Continuous vertical line
+                  Positioned(
+                    left: 35, // Adjust this value to align with dots
+                    top: 40, // Start from below first dot
+                    bottom: 24, // End before last dot
+                    child: Container(
+                      width: 2,
+                      color: const Color(0xFF003B5C),
+                    ),
+                  ),
+                  ListView.builder(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24.0,
+                      vertical: 24.0,
+                    ),
+                    itemCount: historyData.length,
+                    itemBuilder: (context, index) {
+                      var event = historyData[index];
+                      return HistoryEvent(
+                        event: event,
+                        isActive: index == 1,
+                        isLast: index == historyData.length - 1,
+                      );
+                    },
+                  ),
+                ],
               ),
       ),
     );
@@ -388,48 +402,34 @@ class HistoryEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 32.0),
+    return Container(
+      margin: const EdgeInsets.only(bottom: 32),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Timeline indicator column with continuous line
+          // Timeline dot
           Container(
-            width: 20,
-            child: Column(
-              children: [
-                // Circle indicator
-                Container(
-                  width: 16,
-                  height: 16,
-                  decoration: BoxDecoration(
-                    color: isActive ? const Color(0xFF003B5C) : Colors.white,
-                    border: Border.all(
-                      color: const Color(0xFF003B5C),
-                      width: 2,
-                    ),
-                    shape: BoxShape.circle,
-                  ),
+            margin: const EdgeInsets.only(top: 8),
+            width: 24,
+            child: Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                color: isActive ? const Color(0xFF003B5C) : Colors.white,
+                border: Border.all(
+                  color: const Color(0xFF003B5C),
+                  width: 2,
                 ),
-                // Vertical line that extends to the next item
-                if (!isLast)
-                  Container(
-                    width: 2,
-                    height:
-                        150, // Adjust this value based on your content height
-                    color: const Color(0xFF003B5C),
-                    margin: const EdgeInsets.only(top: 4),
-                  ),
-              ],
+                shape: BoxShape.circle,
+              ),
             ),
           ),
           const SizedBox(width: 24),
-          // Content column
+          // Content
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Date and title section
                 Text(
                   event['date'] ?? '',
                   style: const TextStyle(
@@ -448,17 +448,16 @@ class HistoryEvent extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 16),
-                // Content section with image and text side by side
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     if (event['image'] != null)
                       Container(
-                        width: 60, // Adjust width as needed
+                        width: 100,
                         margin: const EdgeInsets.only(right: 16),
                         child: Image.asset(
                           event['image'],
-                          height: 40,
+                          height: 80,
                           fit: BoxFit.contain,
                           alignment: Alignment.topLeft,
                         ),

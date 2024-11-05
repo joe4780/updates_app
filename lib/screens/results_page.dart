@@ -50,17 +50,13 @@ class _ResultsPageState extends State<ResultsPage> {
                     const Spacer(),
                     Row(
                       children: [
-                        _buildMedal(Colors.yellow[700]!),
-                        _buildMedal(Colors.grey[400]!),
-                        _buildMedal(Colors.brown[300]!),
-                        Container(
-                          width: 20,
-                          height: 20,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Colors.grey[400]!),
-                          ),
-                        ),
+                        _buildMedalIcon(Colors.yellow[700]!,
+                            FontAwesomeIcons.medal), // Gold
+                        _buildMedalIcon(Colors.grey[400]!,
+                            FontAwesomeIcons.medal), // Silver
+                        _buildMedalIcon(Colors.brown[300]!,
+                            FontAwesomeIcons.medal), // Bronze
+                        // You can remove the last Container if you want
                       ],
                     ),
                   ],
@@ -108,14 +104,13 @@ class _ResultsPageState extends State<ResultsPage> {
           );
   }
 
-  Widget _buildMedal(Color color) {
+  Widget _buildMedalIcon(Color color, IconData icon) {
     return Container(
-      width: 20,
-      height: 20,
       margin: const EdgeInsets.symmetric(horizontal: 4),
-      decoration: BoxDecoration(
+      child: Icon(
+        icon,
         color: color,
-        shape: BoxShape.circle,
+        size: 20, // Adjust size as needed
       ),
     );
   }
@@ -267,20 +262,23 @@ class ResultDetailPage extends StatelessWidget {
             child: ListView(
               children: [
                 _buildMedalSection(
-                    'Gold Medals',
-                    competitors.where((c) => c.medalType == 'gold').toList(),
-                    Colors.yellow[700]!,
-                    FontAwesomeIcons.medal), // Use Font Awesome medal icon
+                  'Gold Medals',
+                  competitors.where((c) => c.medalType == 'gold').toList(),
+                  Colors.yellow[700]!,
+                  FontAwesomeIcons.medal,
+                ),
                 _buildMedalSection(
-                    'Silver Medals',
-                    competitors.where((c) => c.medalType == 'silver').toList(),
-                    Colors.grey[400]!,
-                    FontAwesomeIcons.medal), // Use Font Awesome medal icon
+                  'Silver Medals',
+                  competitors.where((c) => c.medalType == 'silver').toList(),
+                  Colors.grey[400]!,
+                  FontAwesomeIcons.medal,
+                ),
                 _buildMedalSection(
-                    'Bronze Medals',
-                    competitors.where((c) => c.medalType == 'bronze').toList(),
-                    Colors.brown[300]!,
-                    FontAwesomeIcons.medal), // Use Font Awesome medal icon
+                  'Bronze Medals',
+                  competitors.where((c) => c.medalType == 'bronze').toList(),
+                  Colors.brown[300]!,
+                  FontAwesomeIcons.medal,
+                ),
               ],
             ),
           ),
@@ -294,26 +292,27 @@ class ResultDetailPage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end, // Align to the right
+        crossAxisAlignment: CrossAxisAlignment.start, // Align to the start
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
-              mainAxisAlignment:
-                  MainAxisAlignment.end, // Align title to the right
               children: [
                 Icon(
                   icon,
                   color: color,
                   size: 20,
                 ),
-                const SizedBox(width: 8),
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: color,
+                const SizedBox(width: 8), // Space between icon and text
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: color,
+                    ),
+                    textAlign: TextAlign.right, // Align text to the right
                   ),
                 ),
               ],

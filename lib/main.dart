@@ -352,14 +352,19 @@ class _HistoryPageState extends State<HistoryPage> {
         color: Colors.white,
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
-            : ListView.separated(
-                padding: const EdgeInsets.all(16.0),
+            : ListView.builder(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                  vertical: 32.0,
+                ),
                 itemCount: historyData.length,
-                separatorBuilder: (context, index) =>
-                    const SizedBox(height: 16),
                 itemBuilder: (context, index) {
                   var event = historyData[index];
-                  return HistoryCard(event: event);
+                  return HistoryEvent(
+                    event: event,
+                    isActive: index == 1, // Adjust based on your logic
+                    isLast: index == historyData.length - 1,
+                  );
                 },
               ),
       ),
@@ -367,60 +372,98 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 }
 
-class HistoryCard extends StatelessWidget {
-  final Map<String, dynamic> event;
+class HistoryEvent extends StatelessWidget {
+  final dynamic event;
+  final bool isActive;
+  final bool isLast;
 
-  const HistoryCard({Key? key, required this.event}) : super(key: key);
+  const HistoryEvent({
+    Key? key,
+    required this.event,
+    this.isActive = false,
+    this.isLast = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              event['date'], // Assuming date is in a suitable string format
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Color(
-                    0xFF003B5C), // Dark blue color for the active event date
-              ),
+    return IntrinsicHeight(
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Timeline indicator column
+          SizedBox(
+            width: 16,
+            child: Column(
+              children: [
+                // Circle indicator
+                Container(
+                  width: 16,
+                  height: 16,
+                  decoration: BoxDecoration(
+                    color: isActive ? Color(0xFF003B5C) : Colors.white,
+                    border: Border.all(
+                      color: Color(0xFF003B5C),
+                      width: 2,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                // Vertical line
+                if (!isLast)
+                  Expanded(
+                    child: Container(
+                      width: 1,
+                      color: Color(0xFF003B5C),
+                    ),
+                  ),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              event['title'],
-              style: const TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
+          ),
+          const SizedBox(width: 24),
+          // Content column
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  event['date'] ?? '',
+                  style: TextStyle(
+                    color: Color(0xFF003B5C),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  event['title'] ?? '',
+                  style: TextStyle(
+                    color: Color(0xFF003B5C),
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                if (event['logo'] != null)
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 12),
+                    child: Image.asset(
+                      event['logo'],
+                      height: 32,
+                    ),
+                  ),
+                Text(
+                  event['content'] ?? '',
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 14,
+                    height: 1.5,
+                  ),
+                ),
+                const SizedBox(height: 32),
+              ],
             ),
-            const SizedBox(height: 8),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.asset(
-                event['image'] ?? 'assets/placeholder.png',
-                width: double.infinity,
-                height: 180,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              event['content'] ?? '',
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.black54,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'screens/results_page.dart';
 
 void main() {
   runApp(const UpdatesApp());
@@ -75,16 +76,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   return FlexibleSpaceBar(
                     centerTitle: true,
                     title: Opacity(
-                      opacity: 1.0, // Keep the logo visible
+                      opacity: 1.0,
                       child: Container(
                         alignment: Alignment.center,
-                        width: double
-                            .infinity, // Make the logo container take full width
+                        width: double.infinity,
                         child: Image.asset(
                           'assets/logo.png',
-                          height: 30 + (expandRatio * 30), // Adjust logo size
-                          fit: BoxFit
-                              .contain, // Ensure the logo maintains its aspect ratio
+                          height: 30 + (expandRatio * 30),
+                          fit: BoxFit.contain,
                         ),
                       ),
                     ),
@@ -116,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           controller: _tabController,
           children: [
             NewsPage(),
-            ResultsPage(),
+            const ResultsPage(),
             HistoryPage(),
           ],
         ),
@@ -184,8 +183,7 @@ class NewsCard extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-            vertical: 8.0, horizontal: 16.0), // Adjust padding
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -296,16 +294,79 @@ class NewsDetailPage extends StatelessWidget {
   }
 }
 
-class ResultsPage extends StatelessWidget {
+class HistoryPage extends StatefulWidget {
+  @override
+  _HistoryPageState createState() => _HistoryPageState();
+}
+
+class _HistoryPageState extends State<HistoryPage> {
+  List<dynamic> historyData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadHistoryData();
+  }
+
+  Future<void> loadHistoryData() async {
+    final String response =
+        await rootBundle.loadString('assets/data/history.json');
+    final Map<String, dynamic> data = json.decode(response);
+    setState(() {
+      historyData = data['events'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('Results Page'));
+    return historyData.isNotEmpty
+        ? ListView.separated(
+            padding: const EdgeInsets.all(8.0),
+            itemCount: historyData.length,
+            separatorBuilder: (context, index) => const Divider(
+              height: 1,
+              color: Color(0xFFE5E5E5),
+            ),
+            itemBuilder: (context, index) {
+              var event = historyData[index];
+              return HistoryCard(event: event);
+            },
+          )
+        : const Center(child: CircularProgressIndicator());
   }
 }
 
-class HistoryPage extends StatelessWidget {
+class HistoryCard extends StatelessWidget {
+  final Map<String, dynamic> event;
+
+  const HistoryCard({Key? key, required this.event}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('History Page'));
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            event['title'],
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            event['description'] ?? '',
+            style: const TextStyle(fontSize: 14, color: Colors.black54),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Date: ${event['date'] ?? ''}',
+            style: const TextStyle(fontSize: 12, color: Colors.black45),
+          ),
+        ],
+      ),
+    );
   }
 }

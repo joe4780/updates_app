@@ -56,6 +56,8 @@ flutter:
     - assets/data/news.json
     - assets/data/results.json
     - assets/logo.png
+    - assets/logo2.png
+    - assets/logo3.jpeg
     - assets/images/imageone.jpeg
     - assets/images/imagetwo.jpeg
     - assets/images/imagethree.png
@@ -66,6 +68,27 @@ flutter:
     - assets/images/imageeight.jpeg
     - assets/images/imagenine.jpeg
     - assets/images/imageten.jpeg
+
+    - assets/flags/one.gif
+    - assets/flags/two.gif
+    - assets/flags/three.gif
+    - assets/flags/four.gif
+    - assets/flags/five.gif
+    - assets/flags/six.gif
+    - assets/flags/7.gif
+    - assets/flags/8.gif
+    - assets/flags/9.gif
+    - assets/flags/10.gif
+    - assets/flags/11.gif
+    - assets/flags/12.gif
+    - assets/flags/13.gif
+    - assets/flags/14.gif
+    - assets/flags/15.gif
+    - assets/flags/16.gif
+    - assets/flags/17.gif
+    - assets/flags/18.gif
+    - assets/flags/19.gif
+    - assets/flags/20.gif
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

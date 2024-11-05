@@ -19,21 +19,20 @@ class UpdatesApp extends StatelessWidget {
         primaryColor: const Color(0xFF1A4B8E),
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: const HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
-
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   late TabController _tabController;
   late ScrollController _scrollController;
+  bool _isDarkMode = false;
 
   @override
   void initState() {
@@ -54,6 +53,52 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  void _toggleDarkMode() {
+    setState(() {
+      _isDarkMode = !_isDarkMode;
+    });
+  }
+
+  void _openSettings(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(bottom: 8.0),
+                child: Text(
+                  'Settings',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Dark Mode',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  Switch(
+                    value: _isDarkMode,
+                    onChanged: (value) {
+                      _toggleDarkMode();
+                      Navigator.pop(context);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +110,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               expandedHeight: 120.0,
               floating: false,
               pinned: true,
-              backgroundColor: const Color(0xFF1A4B8E),
+              backgroundColor:
+                  _isDarkMode ? Colors.black : const Color(0xFF1A4B8E),
               flexibleSpace: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   final double currentHeight = constraints.biggest.height;
@@ -91,6 +137,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   );
                 },
               ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.settings),
+                  onPressed: () => _openSettings(context),
+                ),
+              ],
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(48),
                 child: TabBar(
@@ -102,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     Tab(text: 'History'),
                   ],
                   labelColor: Colors.white,
-                  unselectedLabelColor: Colors.white70,
+                  unselectedLabelColor: Color.fromARGB(179, 253, 253, 253),
                   labelStyle: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -121,6 +173,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           ],
         ),
       ),
+      backgroundColor:
+          _isDarkMode ? const Color.fromARGB(255, 41, 39, 39) : Colors.white,
     );
   }
 }

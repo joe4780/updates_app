@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'screens/results_page.dart'; // Ensure this imports the correct results page
-import 'screens/history_page.dart'; // Import the HistoryPage
+// Import the HistoryPage
 
 void main() {
   runApp(const UpdatesApp());

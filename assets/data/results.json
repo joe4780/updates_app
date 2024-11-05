@@ -6,7 +6,7 @@
       "flag_image_url": "assets/flags/one.gif",
       "competitors": [
         {
-          "name": "Alice Johnson",
+          "name": "nzambu joseph",
           "avatarPath": "assets/avatar.png",
           "skillName": "Skiing",
           "medalType": "gold"
@@ -18,7 +18,7 @@
           "medalType": "gold"
         },
         {
-          "name": "Thomas Lee",
+          "name": "joe Lee",
           "avatarPath": "assets/avatar.png",
           "skillName": "Cycling",
           "medalType": "bronze"

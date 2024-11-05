@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ResultsPage extends StatefulWidget {
   const ResultsPage({Key? key}) : super(key: key);
@@ -234,7 +235,7 @@ class ResultDetailPage extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: const Align(
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.centerRight,
           child: Text('Results'),
         ),
       ),
@@ -268,15 +269,18 @@ class ResultDetailPage extends StatelessWidget {
                 _buildMedalSection(
                     'Gold Medals',
                     competitors.where((c) => c.medalType == 'gold').toList(),
-                    Colors.yellow[700]!),
+                    Colors.yellow[700]!,
+                    FontAwesomeIcons.medal), // Use Font Awesome medal icon
                 _buildMedalSection(
                     'Silver Medals',
                     competitors.where((c) => c.medalType == 'silver').toList(),
-                    Colors.grey[400]!),
+                    Colors.grey[400]!,
+                    FontAwesomeIcons.medal), // Use Font Awesome medal icon
                 _buildMedalSection(
                     'Bronze Medals',
                     competitors.where((c) => c.medalType == 'bronze').toList(),
-                    Colors.brown[300]!),
+                    Colors.brown[300]!,
+                    FontAwesomeIcons.medal), // Use Font Awesome medal icon
               ],
             ),
           ),
@@ -286,18 +290,20 @@ class ResultDetailPage extends StatelessWidget {
   }
 
   Widget _buildMedalSection(
-      String title, List<Competitor> competitors, Color color) {
+      String title, List<Competitor> competitors, Color color, IconData icon) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end, // Align to the right
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
+              mainAxisAlignment:
+                  MainAxisAlignment.end, // Align title to the right
               children: [
                 Icon(
-                  Icons.emoji_events,
+                  icon,
                   color: color,
                   size: 20,
                 ),

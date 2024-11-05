@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'screens/results_page.dart';
+import 'screens/results_page.dart'; // Ensure this imports the correct results page
+import 'screens/history_page.dart'; // Import the HistoryPage
 
 void main() {
   runApp(const UpdatesApp());
@@ -139,12 +140,16 @@ class _NewsPageState extends State<NewsPage> {
   }
 
   Future<void> loadNewsData() async {
-    final String response =
-        await rootBundle.loadString('assets/data/news.json');
-    final Map<String, dynamic> data = json.decode(response);
-    setState(() {
-      newsData = data['news'];
-    });
+    try {
+      final String response =
+          await rootBundle.loadString('assets/data/news.json');
+      final Map<String, dynamic> data = json.decode(response);
+      setState(() {
+        newsData = data['news'];
+      });
+    } catch (e) {
+      print("Error loading news data: $e");
+    }
   }
 
   @override
@@ -301,6 +306,7 @@ class HistoryPage extends StatefulWidget {
 
 class _HistoryPageState extends State<HistoryPage> {
   List<dynamic> historyData = [];
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -309,30 +315,55 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   Future<void> loadHistoryData() async {
-    final String response =
-        await rootBundle.loadString('assets/data/history.json');
-    final Map<String, dynamic> data = json.decode(response);
-    setState(() {
-      historyData = data['events'];
-    });
+    try {
+      final String response =
+          await rootBundle.loadString('assets/data/history.json');
+      final data = json.decode(response);
+      setState(() {
+        historyData = data['events'] ?? [];
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error loading history data: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return historyData.isNotEmpty
-        ? ListView.separated(
-            padding: const EdgeInsets.all(8.0),
-            itemCount: historyData.length,
-            separatorBuilder: (context, index) => const Divider(
-              height: 1,
-              color: Color(0xFFE5E5E5),
+    return Scaffold(
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Image.asset(
+              'assets/logo.png',
+              height: 24,
+              color: Colors.white,
             ),
-            itemBuilder: (context, index) {
-              var event = historyData[index];
-              return HistoryCard(event: event);
-            },
-          )
-        : const Center(child: CircularProgressIndicator());
+            const SizedBox(width: 8),
+            const Text('History'),
+          ],
+        ),
+        backgroundColor: const Color(0xFF003B5C),
+      ),
+      body: Container(
+        color: Colors.white,
+        child: isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView.separated(
+                padding: const EdgeInsets.all(16.0),
+                itemCount: historyData.length,
+                separatorBuilder: (context, index) =>
+                    const SizedBox(height: 16),
+                itemBuilder: (context, index) {
+                  var event = historyData[index];
+                  return HistoryCard(event: event);
+                },
+              ),
+      ),
+    );
   }
 }
 
@@ -343,29 +374,53 @@ class HistoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            event['title'],
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              event['date'], // Assuming date is in a suitable string format
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Color(
+                    0xFF003B5C), // Dark blue color for the active event date
+              ),
             ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            event['description'] ?? '',
-            style: const TextStyle(fontSize: 14, color: Colors.black54),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Date: ${event['date'] ?? ''}',
-            style: const TextStyle(fontSize: 12, color: Colors.black45),
-          ),
-        ],
+            const SizedBox(height: 8),
+            Text(
+              event['title'],
+              style: const TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.asset(
+                event['image'] ?? 'assets/placeholder.png',
+                width: double.infinity,
+                height: 180,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              event['content'] ?? '',
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.black54,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

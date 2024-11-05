@@ -4,42 +4,49 @@
       "image": "assets/logo.png",
       "date": "10-15 september 2024",
       "title": "WorldSkills Competition 2024",
+      "isActive": false,
       "content": "The WorldSkills Competition 2024 is the premier global event showcasing the skills and talents of young professionals from around the world. This year's competition will feature over 1,000 competitors across various skill categories including technology, construction, and creative arts. Join us to witness the cutting-edge skills and innovation as young talents compete for the title of World Champion. Engage in workshops, seminars, and networking opportunities to connect with industry leaders and peers. Don't miss this chance to be part of the world’s largest skills competition!"
     },
     {
       "image": "assets/logo2.png",
       "date": "15-20 september 2024",
       "title": "Tech Innovation Summit 2024",
+      "isActive": false,
       "content": "The Tech Innovation Summit 2024 brings together tech enthusiasts, innovators, and leaders to explore the future of technology. This event will feature keynote speeches from top tech experts, panel discussions on emerging trends, and hands-on sessions with the latest technologies. Network with industry professionals and get inspired by groundbreaking innovations that are shaping the future. Reserve your spot today!"
     },
     {
       "image": "assets/logo3.jpeg",
       "date": "01-10 November 2024",
       "title": "Creative Arts Expo 2024",
+      "isActive": true,
       "content": "Discover the latest trends and talents in the creative arts at the Creative Arts Expo 2024. This event will showcase works from emerging artists in visual arts, music, theater, and design. Attend workshops to refine your skills, participate in interactive sessions, and enjoy performances from top artists. Join us for an inspiring celebration of creativity and artistic expression!"
     },
     {
       "image": "assets/logo2.png",
       "date": "15-20 November 2024",
       "title": "Tech Innovation Summit 2024",
+      "isActive": false,
       "content": "The Tech Innovation Summit 2024 brings together tech enthusiasts, innovators, and leaders to explore the future of technology. This event will feature keynote speeches from top tech experts, panel discussions on emerging trends, and hands-on sessions with the latest technologies. Network with industry professionals and get inspired by groundbreaking innovations that are shaping the future. Reserve your spot today!"
     },
     {
       "image": "assets/logo2.png",
       "date": "21-22 November 2024",
       "title": "Tech Innovation Summit 2024",
+      "isActive": false,
       "content": "The Tech Innovation Summit 2024 brings together tech enthusiasts, innovators, and leaders to explore the future of technology. This event will feature keynote speeches from top tech experts, panel discussions on emerging trends, and hands-on sessions with the latest technologies. Network with industry professionals and get inspired by groundbreaking innovations that are shaping the future. Reserve your spot today!"
     },
     {
       "image": "assets/logo3.jpeg",
       "date": "23-25 November 2024",
       "title": "Creative Arts Expo 2024",
+      "isActive": false,
       "content": "Discover the latest trends and talents in the creative arts at the Creative Arts Expo 2024. This event will showcase works from emerging artists in visual arts, music, theater, and design. Attend workshops to refine your skills, participate in interactive sessions, and enjoy performances from top artists. Join us for an inspiring celebration of creativity and artistic expression!"
     },
     {
       "image": "assets/logo3.jpeg",
       "date": "26-27 November 2024",
       "title": "Creative Arts Expo 2024",
+      "isActive": false,
       "content": "Discover the latest trends and talents in the creative arts at the Creative Arts Expo 2024. This event will showcase works from emerging artists in visual arts, music, theater, and design. Attend workshops to refine your skills, participate in interactive sessions, and enjoy performances from top artists. Join us for an inspiring celebration of creativity and artistic expression!"
     }
   ]

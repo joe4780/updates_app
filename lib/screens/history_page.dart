@@ -22,14 +22,12 @@ class _HistoryPageState extends State<HistoryPage> {
       final String response =
           await rootBundle.loadString('assets/history.json');
       final data = json.decode(response);
-      print(data); // Debugging line
       setState(() {
-        historyData = data['events'];
-        print("Number of events: ${historyData.length}"); // Debugging line
+        historyData = data['events'] ?? [];
         isLoading = false;
       });
     } catch (e) {
-      print("Error loading data: $e"); // Debugging line
+      print("Error loading history data: $e");
       setState(() {
         isLoading = false;
       });
@@ -45,6 +43,7 @@ class _HistoryPageState extends State<HistoryPage> {
             Image.asset(
               'assets/logo.png',
               height: 24,
+              color: Colors.white,
             ),
             const SizedBox(width: 8),
             const Text('History'),
@@ -53,26 +52,23 @@ class _HistoryPageState extends State<HistoryPage> {
         backgroundColor: const Color(0xFF003B5C),
       ),
       body: Container(
-        color: Colors.grey[100],
+        color: Colors.white,
         child: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : ListView.builder(
-                padding: const EdgeInsets.all(16.0),
-                itemCount: historyData.length,
-                itemBuilder: (context, index) {
-                  return TimelineItem(
-                    event: historyData[index],
-                    isLast: index == historyData.length - 1,
-                  );
-                },
-              ),
+            ? const Center(child: CircularProgressIndicator())
+            : historyData.isEmpty
+                ? const Center(child: Text('No history data available'))
+                : ListView.builder(
+                    padding: const EdgeInsets.all(24.0),
+                    itemCount: historyData.length,
+                    itemBuilder: (context, index) {
+                      return TimelineItem(
+                        event: historyData[index],
+                        isLast: index == historyData.length - 1,
+                      );
+                    },
+                  ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
 
@@ -94,18 +90,20 @@ class TimelineItem extends StatelessWidget {
         children: [
           // Timeline line and dot
           SizedBox(
-            width: 40,
+            width: 32,
             child: Column(
               children: [
                 Container(
-                  width: 20,
-                  height: 20,
+                  width: 24,
+                  height: 24,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: Colors.blue,
+                    color: _isUpcomingEvent(event['date'])
+                        ? Colors.white
+                        : const Color(0xFF003B5C),
                     border: Border.all(
-                      color: Colors.blue,
-                      width: 4,
+                      color: const Color(0xFF003B5C),
+                      width: 2,
                     ),
                   ),
                 ),
@@ -113,7 +111,8 @@ class TimelineItem extends StatelessWidget {
                   Expanded(
                     child: Container(
                       width: 2,
-                      color: Colors.grey[300],
+                      color: const Color(0xFF003B5C),
+                      margin: const EdgeInsets.symmetric(vertical: 8.0),
                     ),
                   ),
               ],
@@ -126,36 +125,37 @@ class TimelineItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  event['date'],
+                  event['date'] ?? '',
                   style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  event['title'],
-                  style: const TextStyle(
-                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF003B5C),
                   ),
                 ),
                 const SizedBox(height: 8),
+                Text(
+                  event['title'] ?? '',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF003B5C),
+                  ),
+                ),
+                const SizedBox(height: 12),
                 if (event['image'] != null)
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    padding: const EdgeInsets.only(bottom: 12.0),
                     child: Image.asset(
                       event['image'],
-                      height: 40,
+                      height: 32,
                     ),
                   ),
                 Text(
-                  event['content'],
+                  event['content'] ?? '',
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.black87,
+                    height: 1.5,
                   ),
                 ),
                 const SizedBox(height: 24),
@@ -165,5 +165,19 @@ class TimelineItem extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  bool _isUpcomingEvent(String? date) {
+    if (date == null) return false;
+    try {
+      // Check if the date contains a year
+      final year = int.parse(date.split(RegExp(r'[- ]')).firstWhere(
+            (element) => element.length == 4,
+            orElse: () => '0',
+          ));
+      return year >= DateTime.now().year;
+    } catch (e) {
+      return false;
+    }
   }
 }

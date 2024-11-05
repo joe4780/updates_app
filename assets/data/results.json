@@ -12,6 +12,12 @@
           "medalType": "gold"
         },
         {
+          "name": "Alice Johnson",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Skiing",
+          "medalType": "gold"
+        },
+        {
           "name": "Thomas Lee",
           "avatarPath": "assets/avatar.png",
           "skillName": "Cycling",
@@ -43,6 +49,12 @@
           "medalType": "gold"
         },
         {
+          "name": "Alice Johnson",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Skiing",
+          "medalType": "gold"
+        },
+        {
           "name": "Thomas Lee",
           "avatarPath": "assets/avatar.png",
           "skillName": "Cycling",
@@ -68,6 +80,24 @@
           "medalType": "silver"
         },
         {
+          "name": "Yuki Tanaka",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Karate",
+          "medalType": "gold"
+        },
+        {
+          "name": "Yuki Tanaka",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Karate",
+          "medalType": "gold"
+        },
+        {
+          "name": "Alice Johnson",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Skiing",
+          "medalType": "gold"
+        },
+        {
           "name": "Thomas Lee",
           "avatarPath": "assets/avatar.png",
           "skillName": "Cycling",
@@ -90,6 +120,12 @@
           "name": "Yuki Tanaka",
           "avatarPath": "assets/avatar.png",
           "skillName": "Karate",
+          "medalType": "gold"
+        },
+        {
+          "name": "Alice Johnson",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Skiing",
           "medalType": "gold"
         },
         {
@@ -143,6 +179,12 @@
           "medalType": "bronze"
         },
         {
+          "name": "Yuki Tanaka",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Karate",
+          "medalType": "gold"
+        },
+        {
           "name": "Marie Dupont",
           "avatarPath": "assets/avatar.png",
           "skillName": "Judo",
@@ -187,6 +229,18 @@
           "medalType": "bronze"
         },
         {
+          "name": "Yuki Tanaka",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Karate",
+          "medalType": "gold"
+        },
+        {
+          "name": "Yuki Tanaka",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Karate",
+          "medalType": "gold"
+        },
+        {
           "name": "Anita Singh",
           "avatarPath": "assets/avatar.png",
           "skillName": "Badminton",
@@ -223,6 +277,12 @@
           "avatarPath": "assets/avatar.png",
           "skillName": "Cycling",
           "medalType": "bronze"
+        },
+        {
+          "name": "Yuki Tanaka",
+          "avatarPath": "assets/avatar.png",
+          "skillName": "Karate",
+          "medalType": "gold"
         },
         {
           "name": "James Brown",

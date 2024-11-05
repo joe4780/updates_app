@@ -233,7 +233,10 @@ class ResultDetailPage extends StatelessWidget {
           icon: const Icon(Icons.arrow_back),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Results'),
+        title: const Align(
+          alignment: Alignment.centerLeft,
+          child: Text('Results'),
+        ),
       ),
       body: Column(
         children: [
@@ -260,14 +263,66 @@ class ResultDetailPage extends StatelessWidget {
             ),
           ),
           Expanded(
+            child: ListView(
+              children: [
+                _buildMedalSection(
+                    'Gold Medals',
+                    competitors.where((c) => c.medalType == 'gold').toList(),
+                    Colors.yellow[700]!),
+                _buildMedalSection(
+                    'Silver Medals',
+                    competitors.where((c) => c.medalType == 'silver').toList(),
+                    Colors.grey[400]!),
+                _buildMedalSection(
+                    'Bronze Medals',
+                    competitors.where((c) => c.medalType == 'bronze').toList(),
+                    Colors.brown[300]!),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildMedalSection(
+      String title, List<Competitor> competitors, Color color) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.emoji_events,
+                  color: color,
+                  size: 20,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: color,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 200,
             child: GridView.builder(
-              padding: const EdgeInsets.all(16),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.85,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
+                crossAxisCount: 2, // Two cards per row
+                childAspectRatio: 0.75, // Adjust aspect ratio as needed
+                crossAxisSpacing: 16.0, // Space between cards
+                mainAxisSpacing: 16.0, // Space between rows
               ),
+              padding: const EdgeInsets.all(16),
               itemCount: competitors.length,
               itemBuilder: (context, index) {
                 return CompetitorCard(competitor: competitors[index]);
@@ -309,12 +364,8 @@ class CompetitorCard extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (competitor.medalType.isNotEmpty)
-              Align(
-                alignment: Alignment.topRight,
-                child: _buildMedalIcon(competitor.medalType),
-              ),
             CircleAvatar(
               radius: 40,
               backgroundColor: Colors.grey[200],
@@ -334,36 +385,14 @@ class CompetitorCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 4),
-            Flexible(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Text(
-                  competitor.skillName,
-                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
-                ),
-              ),
+            Text(
+              competitor.skillName,
+              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildMedalIcon(String medalType) {
-    Color color;
-    if (medalType == 'gold')
-      color = Colors.yellow[700]!;
-    else if (medalType == 'silver')
-      color = Colors.grey[400]!;
-    else if (medalType == 'bronze')
-      color = Colors.brown[300]!;
-    else
-      color = Colors.transparent;
-
-    return Icon(
-      Icons.emoji_events,
-      color: color,
-      size: 20,
     );
   }
 }

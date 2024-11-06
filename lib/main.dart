@@ -107,11 +107,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              expandedHeight: 200.0,
+              expandedHeight: 250.0,
               floating: false,
               pinned: true,
-              backgroundColor:
-                  _isDarkMode ? Colors.black : const Color(0xFF3949AB),
+              backgroundColor: _isDarkMode
+                  ? Colors.black
+                  : const Color.fromARGB(255, 64, 82, 166),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(20),
@@ -132,7 +133,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: expandRatio > 0.5 ? 100 : 50, // Logo height
+                          height: expandRatio > 0.5 ? 150 : 80, // Logo height
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Image.asset(
                             'assets/logo.png',

@@ -107,57 +107,83 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
-              expandedHeight: 120.0,
+              expandedHeight: 200.0,
               floating: false,
               pinned: true,
               backgroundColor:
-                  _isDarkMode ? Colors.black : const Color(0xFF1A4B8E),
+                  _isDarkMode ? Colors.black : const Color(0xFF3949AB),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(20),
+                ),
+              ),
               flexibleSpace: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
                   final double currentHeight = constraints.biggest.height;
                   final double expandRatio =
                       ((currentHeight - kToolbarHeight - 48) /
-                              (120.0 - kToolbarHeight - 48))
+                              (200.0 - kToolbarHeight - 48))
                           .clamp(0.0, 1.0);
 
-                  return FlexibleSpaceBar(
-                    centerTitle: true,
-                    title: Opacity(
-                      opacity: 1.0,
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: double.infinity,
-                        child: Image.asset(
-                          'assets/logo.png',
-                          height: 30 + (expandRatio * 30),
-                          fit: BoxFit.contain,
+                  return Stack(
+                    children: [
+                      Positioned(
+                        bottom: 48, // Height of the tab bar
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: expandRatio > 0.5 ? 100 : 50, // Logo height
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Image.asset(
+                            'assets/logo.png',
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   );
                 },
               ),
               actions: [
-                IconButton(
-                  icon: const Icon(Icons.settings),
-                  onPressed: () => _openSettings(context),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                    onPressed: () => _openSettings(context),
+                  ),
                 ),
               ],
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(48),
-                child: TabBar(
-                  controller: _tabController,
-                  indicatorColor: Colors.white,
-                  tabs: const [
-                    Tab(text: 'News'),
-                    Tab(text: 'Results'),
-                    Tab(text: 'History'),
-                  ],
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Color.fromARGB(179, 253, 253, 253),
-                  labelStyle: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+                child: Container(
+                  height: 48,
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Colors.white24,
+                        width: 0.5,
+                      ),
+                    ),
+                  ),
+                  child: TabBar(
+                    controller: _tabController,
+                    indicatorColor: Colors.white,
+                    indicatorWeight: 3.0,
+                    tabs: const [
+                      Tab(text: 'News'),
+                      Tab(text: 'Results'),
+                      Tab(text: 'History'),
+                    ],
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.white70,
+                    labelStyle: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),

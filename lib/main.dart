@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'screens/results_page.dart'; // Ensure this imports the correct results page
-// Import the HistoryPage
+import 'package:google_fonts/google_fonts.dart';
+import 'screens/results_page.dart';
 
 void main() {
   runApp(const UpdatesApp());
@@ -292,10 +292,47 @@ class NewsCard extends StatelessWidget {
   }
 }
 
-class NewsDetailPage extends StatelessWidget {
+class NewsDetailPage extends StatefulWidget {
   final Map<String, dynamic> newsItem;
 
   const NewsDetailPage({super.key, required this.newsItem});
+
+  @override
+  State<NewsDetailPage> createState() => _NewsDetailPageState();
+}
+
+class _NewsDetailPageState extends State<NewsDetailPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  bool isLiked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+  }
+
+  void _animateIcon() {
+    setState(() {
+      isLiked = !isLiked;
+    });
+    _controller.forward(from: 0.0).then((_) {
+      _controller.reverse().then((_) {
+        _controller.forward().then((_) {
+          _controller.reverse();
+        });
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -305,48 +342,119 @@ class NewsDetailPage extends StatelessWidget {
         elevation: 0,
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
-        title: Text(
-          'News Detail',
-          style: TextStyle(
-            color: Colors.grey[800],
-            fontSize: 18,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-              newsItem['image_url'] ?? 'assets/placeholder.png',
-              width: double.infinity,
-              height: 200,
-              fit: BoxFit.cover,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    newsItem['headline'],
-                    style: const TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    newsItem['content'] ?? newsItem['description'] ?? '',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      height: 1.5,
-                    ),
-                  ),
-                ],
+        centerTitle: false,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: Center(
+              child: Text(
+                'News',
+                style: GoogleFonts.poppins(
+                  color: Colors.grey[800],
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
-          ],
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                widget.newsItem['title'] ?? '',
+                style: GoogleFonts.poppins(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  height: 1.3,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                widget.newsItem['headline'] ?? '',
+                style: GoogleFonts.poppins(
+                  fontSize: 16,
+                  color: Colors.grey[800],
+                  height: 1.5,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Image.asset(
+                widget.newsItem['image_url'] ?? 'assets/placeholder.png',
+                width: double.infinity,
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 20),
+              if (widget.newsItem['content'] != null)
+                Text(
+                  widget.newsItem['content'],
+                  style: GoogleFonts.poppins(
+                    fontSize: 16,
+                    height: 1.6,
+                  ),
+                ),
+              if (widget.newsItem['impact_statements'] != null) ...[
+                const SizedBox(height: 20),
+                Text(
+                  'Our Impact Statements:',
+                  style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    height: 1.3,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ...(widget.newsItem['impact_statements'] as List)
+                    .map((statement) => Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '• ',
+                                style: GoogleFonts.poppins(fontSize: 16),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  statement,
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    height: 1.5,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ))
+                    .toList(),
+              ],
+              const SizedBox(height: 32),
+              Center(
+                child: GestureDetector(
+                  onTap: _animateIcon,
+                  child: AnimatedBuilder(
+                    animation: _controller,
+                    builder: (context, child) {
+                      return Transform.rotate(
+                        angle: _controller.value * 0.2,
+                        child: Icon(
+                          Icons.thumb_up,
+                          size: 32,
+                          color: isLiked ? Colors.blue : Colors.grey[600],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
         ),
       ),
     );

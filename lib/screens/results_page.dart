@@ -354,6 +354,114 @@ class Competitor {
   });
 }
 
+class CompetitorsCarousel extends StatefulWidget {
+  final List<Competitor> competitors;
+
+  const CompetitorsCarousel({
+    Key? key,
+    required this.competitors,
+  }) : super(key: key);
+
+  @override
+  State<CompetitorsCarousel> createState() => _CompetitorsCarouselState();
+}
+
+class _CompetitorsCarouselState extends State<CompetitorsCarousel> {
+  late PageController _pageController;
+  int currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      viewportFraction: 0.85,
+      initialPage: currentIndex,
+    );
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 280,
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: widget.competitors.length,
+            onPageChanged: (index) {
+              setState(() {
+                currentIndex = index;
+              });
+            },
+            itemBuilder: (context, index) {
+              // Add scaling animation for current card
+              return AnimatedScale(
+                scale: currentIndex == index ? 1.0 : 0.9,
+                duration: const Duration(milliseconds: 300),
+                child: AnimatedOpacity(
+                  opacity: currentIndex == index ? 1.0 : 0.6,
+                  duration: const Duration(milliseconds: 300),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: GestureDetector(
+                      onHorizontalDragEnd: (details) {
+                        if (details.primaryVelocity! < 0 &&
+                            currentIndex < widget.competitors.length - 1) {
+                          // Swipe left to next
+                          _pageController.nextPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        } else if (details.primaryVelocity! > 0 &&
+                            currentIndex > 0) {
+                          // Swipe right to previous
+                          _pageController.previousPage(
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.easeInOut,
+                          );
+                        }
+                      },
+                      child:
+                          CompetitorCard(competitor: widget.competitors[index]),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        // Add page indicator dots
+        Padding(
+          padding: const EdgeInsets.only(top: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              widget.competitors.length,
+              (index) => Container(
+                width: currentIndex == index ? 24.0 : 8.0,
+                height: 8.0,
+                margin: const EdgeInsets.symmetric(horizontal: 4.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4.0),
+                  color: currentIndex == index
+                      ? Theme.of(context).primaryColor
+                      : Colors.grey.withOpacity(0.3),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class CompetitorCard extends StatelessWidget {
   final Competitor competitor;
 
@@ -365,34 +473,38 @@ class CompetitorCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 2,
+      elevation: 4,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+      ),
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircleAvatar(
-              radius: 40,
+              radius: 60,
               backgroundColor: Colors.grey[200],
               backgroundImage: competitor.avatarPath.isNotEmpty
                   ? AssetImage(competitor.avatarPath)
                   : null,
               child: competitor.avatarPath.isEmpty
-                  ? const Icon(Icons.person, size: 40, color: Colors.grey)
+                  ? const Icon(Icons.person, size: 60, color: Colors.grey)
                   : null,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
             Text(
               competitor.name,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 8),
             Text(
               competitor.skillName,
-              style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
           ],

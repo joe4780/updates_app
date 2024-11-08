@@ -16,7 +16,7 @@ class UpdatesApp extends StatelessWidget {
     return MaterialApp(
       title: 'WorldSkills Updates',
       theme: ThemeData(
-        primaryColor: const Color(0xFF1A4B8E),
+        primaryColor: const Color.fromARGB(255, 26, 75, 142),
         scaffoldBackgroundColor: Colors.white,
       ),
       home: HomeScreen(),
@@ -196,7 +196,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           children: [
             NewsPage(),
             const ResultsPage(),
-            HistoryPage(),
+            HistoryPage(
+              isDarkMode: _isDarkMode,
+            ),
           ],
         ),
       ),
@@ -489,7 +491,11 @@ class _NewsDetailPageState extends State<NewsDetailPage>
 }
 
 class HistoryPage extends StatefulWidget {
-  const HistoryPage({Key? key}) : super(key: key);
+  final bool isDarkMode;
+  const HistoryPage({
+    Key? key,
+    required this.isDarkMode,
+  }) : super(key: key);
 
   @override
   _HistoryPageState createState() => _HistoryPageState();
@@ -526,7 +532,9 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.white,
+        color: widget.isDarkMode
+            ? const Color.fromARGB(255, 41, 39, 39)
+            : Colors.white,
         child: isLoading
             ? const Center(child: CircularProgressIndicator())
             : Stack(
@@ -538,7 +546,9 @@ class _HistoryPageState extends State<HistoryPage> {
                     bottom: 24, // End before last dot
                     child: Container(
                       width: 2,
-                      color: const Color(0xFF003B5C),
+                      color: widget.isDarkMode
+                          ? Colors.white60
+                          : const Color(0xFF003B5C),
                     ),
                   ),
                   ListView.builder(
@@ -553,6 +563,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         event: event,
                         isActive: index == 1,
                         isLast: index == historyData.length - 1,
+                        isDarkMode: widget.isDarkMode,
                       );
                     },
                   ),
@@ -567,12 +578,14 @@ class HistoryEvent extends StatelessWidget {
   final dynamic event;
   final bool isActive;
   final bool isLast;
+  final bool isDarkMode;
 
   const HistoryEvent({
     Key? key,
     required this.event,
     this.isActive = false,
     this.isLast = false,
+    required this.isDarkMode,
   }) : super(key: key);
 
   @override
